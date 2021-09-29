@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Interactive pricing component</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@600;800&display=swap"
+    />
+
+    <!-- Component Style -->
+    <style>
+      /* Global style */
+      *,
+      *::before,
+      *::after {
+        padding: 0;
+        margin: 0;
+        box-sizing: border-box;
+      }
+      :root {
+        --primary: hsl(227, 35%, 25%);
+        --white: hsl(0, 0%, 100%);
+        --full-slider: hsl(174, 77%, 80%);
+        --strong-cyan: hsl(174, 86%, 45%);
+      }
+      body {
+        height: calc(800px - 67px);
+        color: hsl(225, 20%, 60%);
+        font: 600 15px "Manrope", sans-serif;
+        background: url(images/bg-pattern.svg) hsl(230, 100%, 99%) no-repeat;
+      }
+      @media (max-width: 750px) {
+        body {
+          height: calc(1600px - 114px);
+          font: 600 25px "Manrope", sans-serif;
+          background: url(images/bg-pattern.svg) no-repeat;
+          background-size: 343%;
+        }
+      }
+
+      /* Utilities */
+      .center-grid {
+        display: grid;
+        align-content: center;
+      }
+      .center-flex {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      .justify-between-flex {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .flex-wrap {
+        flex-wrap: wrap;
+      }
+      .text-center {
+        text-align: center;
+      }
+      @media (max-width: 750px) {
+        .mobile-column-direction {
+          flex-direction: column;
+        }
+        .mobile-text-center {
+          text-align: center;
+        }
+      }
+
+      .hide {
+        display: none;
+      }
+      .show {
+        display: block;
+      }
+      @media (max-width: 750px) {
+        .mobile-hide {
+          display: none;
+        }
+        .mobile-show {
+          display: block;
+        }
+      }
+
+      /*
+      ** Header
+      */
+      header {
+        min-height: 145px;
+        margin: 67px 0 54px;
+        background: url(images/pattern-circles.svg) no-repeat center;
+      }
+      header h1 {
+        font-weight: 800;
+        font-size: 1.9em;
+        margin-bottom: 7px;
+        color: var(--primary);
+      }
+      @media (max-width: 750px) {
+        header {
+          min-height: 290px;
+          margin: 114px 0 64px;
+          background-size: contain;
+        }
+        header h1 {
+          font-size: 1.6em;
+          margin-bottom: 15px;
+        }
+        header p {
+          line-height: 1.8;
+          font-size: 26px;
+        }
+      }
+
+      /*
+      ** Card
+      */
+      .card {
+        width: 90%;
+        max-width: 655px;
+        margin: 0 auto;
+        border-radius: 20px;
+        background-color: var(--white);
+        box-shadow: 0 10px 15px 5px rgb(0 0 0 / 7%);
+      }
+      @media (min-width: 751px) {
+        .card {
+          width: 540px;
+          border-radius: 10px;
+        }
+      }
+
+      /* [1] Card Body */
+      .card-body {
+        height: 262px;
+        padding: 40px 44px;
+      }
+      .card-body > div:last-child {
+        font-size: 13px;
+        padding-left: 80px;
+      }
+      .card-body .views {
+        font-weight: 800;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+      }
+      .card-body .price span {
+        font-size: 40px;
+        font-weight: 800;
+        margin-right: 10px;
+        color: var(--primary);
+      }
+      .card-body .discount {
+        width: 80px;
+        height: 20px;
+        font-size: 10px;
+        margin-left: 6px;
+        line-height: 20px;
+        border-radius: 25px;
+        color: hsl(15, 100%, 70%);
+        background-color: hsl(14, 92%, 95%);
+      }
+      @media (max-width: 750px) {
+        .card-body {
+          height: 554px;
+          padding: 67px 0;
+        }
+        .card-body > div:last-child {
+          font-size: 24px;
+          padding-left: 65px;
+        }
+        .card-body .views {
+          letter-spacing: 3px;
+        }
+        .card-body .price {
+          font-size: 27px;
+          margin-bottom: 70px;
+        }
+        .card-body .price span {
+          font-size: 63px;
+          margin-right: 20px;
+        }
+        .card-body .discount {
+          width: 81px;
+          height: 38px;
+          font-size: 20px;
+          line-height: 39px;
+          margin-left: 11px;
+        }
+      }
+
+      /* Slider component */
+      input[type="range"] {
+        -webkit-appearance: none;
+        width: 90%;
+        max-width: 558px;
+        height: 16px;
+        border-radius: 10px;
+        margin: 80px auto;
+
+        background: hsl(224, 65%, 95%);
+        background-image: linear-gradient(
+          var(--full-slider),
+          var(--full-slider)
+        );
+        background-size: 50%, 100%;
+        background-repeat: no-repeat;
+      }
+      input[type="range"]:focus {
+        outline: none;
+      }
+      @media (min-width: 751px) {
+        input[type="range"] {
+          width: 100%;
+          height: 8px;
+          margin: 40px auto 55px;
+          order: 3;
+        }
+      }
+
+      /* Chrome, Edge, Safari */
+      input[type="range"]::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        cursor: grab;
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        background: url(images/icon-slider.svg) var(--strong-cyan) no-repeat
+          center;
+        background-size: 50%;
+        box-shadow: 0 15px 45px 10px var(--full-slider);
+      }
+      input[type="range"]::-webkit-slider-thumb:hover {
+        background-color: var(--full-slider);
+      }
+      /* Firefox */
+      input[type="range"]::-moz-range-thumb {
+        cursor: pointer;
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        border: none;
+        background: url(images/icon-slider.svg) var(--strong-cyan) no-repeat
+          center;
+        box-shadow: 0 25px 50px 15px var(--full-slider);
+      }
+      input[type="range"]::-moz-range-thumb:hover {
+        background-color: var(--full-slider);
+      }
+      /* IE */
+      input[type="range"]::-ms-thumb {
+        cursor: pointer;
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        border: none;
+        background: url(images/icon-slider.svg) var(--strong-cyan) no-repeat
+          center;
+        box-shadow: 0 25px 50px 15px var(--full-slider);
+      }
+      input[type="range"]::-ms-thumb:hover {
+        background-color: var(--full-slider);
+      }
+      @media (min-width: 751px) {
+        input[type="range"]::-webkit-slider-thumb {
+          width: 40px;
+          height: 40px;
+        }
+        input[type="range"]::-moz-range-thumb {
+          width: 40px;
+          height: 40px;
+        }
+        input[type="range"]::-ms-thumb {
+          width: 40px;
+          height: 40px;
+        }
+      }
+
+      /* Btn component */
+      .btn {
+        width: 86px;
+        height: 44px;
+        border-radius: 25px;
+        display: flex;
+        align-items: center;
+        padding: 8px;
+        cursor: pointer;
+        margin: 0 25px;
+        background-color: hsl(223, 50%, 87%);
+      }
+      .btn.on {
+        justify-content: flex-end;
+      }
+      .btn.on,
+      .btn:hover {
+        background-color: var(--strong-cyan);
+      }
+      .btn::before {
+        content: "";
+        width: 28px;
+        height: 28px;
+        display: block;
+        border-radius: 50%;
+        background-color: var(--white);
+      }
+      @media (min-width: 751px) {
+        .btn {
+          width: 43px;
+          height: 22px;
+          padding: 4px;
+          margin: 0 15px;
+        }
+        .btn::before {
+          width: 15px;
+          height: 15px;
+        }
+      }
+
+      /* [2] Card Footer */
+      .card-footer {
+        height: 135px;
+        padding: 0 44px 0 47px;
+      }
+      .card-footer ul {
+        font-size: 12px;
+        list-style: none;
+      }
+      .card-footer li:nth-child(2) {
+        margin: 21px 0;
+        margin: 10px 0;
+      }
+      .card-footer li::before {
+        content: "";
+        width: 15px;
+        height: 10px;
+        margin-right: 10px;
+        display: inline-block;
+        background: url(images/icon-check.svg) no-repeat center;
+        background-size: contain;
+      }
+      .card-footer input[type="submit"] {
+        width: 170px;
+        height: 41px;
+        border: none;
+        font: inherit;
+        border-radius: 40px;
+        color: hsl(226, 100%, 87%);
+        background-color: var(--primary);
+      }
+      .card-footer input[type="submit"]:hover {
+        cursor: pointer;
+        color: var(--white);
+      }
+      @media (max-width: 750px) {
+        .card-footer {
+          height: 400px;
+          padding: 50px 0 64px;
+        }
+        .card-footer ul {
+          font-size: 24px;
+        }
+        .card-footer li:nth-child(2) {
+          margin: 21px 0;
+        }
+        .card-footer li::before {
+          width: 20px;
+          height: 20px;
+          margin-right: 25px;
+        }
+        .card input[type="submit"] {
+          width: 340px;
+          height: 82px;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <!--
+      Header
+    -->
+    <header class="center-grid text-center">
+      <h1>Simple, traffic-based pricing</h1>
+      <p>
+        Sign-up for our 30-day trial.<br class="hide mobile-show" />
+        No credit card required.
+      </p>
+    </header>
+
+    <!--
+      Card
+    -->
+    <form class="card mobile-text-center">
+      <!-- [1] Card Body -->
+      <div class="card-body">
+        <!-- component controls -->
+        <div class="justify-between-flex flex-wrap mobile-column-direction">
+          <p class="views"><span>100K</span> Pageviews</p>
+          <input
+            type="range"
+            name="price"
+            max="4"
+            oninput="handleInputChange(event)"
+          />
+          <p class="price center-flex"><span>$16.00</span>/ month</p>
+        </div>
+
+        <!-- discount controls -->
+        <div class="center-flex">
+          <span>Monthly Billing</span>
+          <div class="btn" onclick="discount(event)"></div>
+          <span>Yearly Billing</span>
+          <span class="discount hide mobile-show">-25%</span>
+          <span class="discount mobile-hide text-center">25% discount</span>
+        </div>
+      </div>
+
+      <!-- Separator -->
+      <div style="height: 1px; background-color: hsl(223, 50%, 87%)"></div>
+
+      <!-- [2] Card Footer -->
+      <div class="card-footer justify-between-flex mobile-column-direction">
+        <ul>
+          <li>Unlimited websites</li>
+          <li>100% data ownership</li>
+          <li>Email reports</li>
+        </ul>
+
+        <input type="submit" value="Start my trial" />
+      </div>
+    </form>
+
+    <!--
+      Component Logic
+    -->
+    <script>
+      /* Helper Functions */
+      function discount(e) {
+        const target = e.target;
+        const price = document.querySelector(".price span");
+        let val = (parseInt(price.innerHTML.substr(1)) / 4) * 3;
+
+        target.classList.toggle("on");
+        target.classList.contains("on")
+          ? (price.innerHTML = "$" + val + ".00")
+          : updateUI(document.querySelector("input[type=range]").value);
+      }
+      function handleInputChange(e) {
+        const target = e.target;
+
+        const min = target.min;
+        const max = target.max;
+        const val = target.value;
+
+        updateUI(val);
+        target.style.backgroundSize =
+          ((val - min) * 100) / (max - min) + "% 100%";
+      }
+      function updateUI(targetVal) {
+        const views = ["10k", "50K", "100K", "500K", "1M"];
+        const prices = ["$8.00", "$12.00", "$16.00", "$24.00", "$36.00"];
+
+        prices.forEach((price, i) => {
+          if (parseInt(targetVal) === i) {
+            document.querySelector(".price span").innerHTML = price;
+            document.querySelector(".views span").innerHTML = views[i];
+          }
+        });
+      }
+    </script>
+  </body>
+</html>
