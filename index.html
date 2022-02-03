@@ -2,476 +2,458 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Interactive pricing component</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Manrope:wght@600;800&display=swap"
     />
-
-    <!-- Component Style -->
+    <title>Interactive pricing component</title>
     <style>
-      /* Global style */
-      *,
-      *::before,
-      *::after {
-        padding: 0;
+      /* Global styles */
+      * {
         margin: 0;
+        padding: 0;
         box-sizing: border-box;
       }
-      :root {
-        --primary: hsl(227, 35%, 25%);
-        --white: hsl(0, 0%, 100%);
-        --full-slider: hsl(174, 77%, 80%);
-        --strong-cyan: hsl(174, 86%, 45%);
-      }
       body {
-        height: calc(800px - 67px);
         color: hsl(225, 20%, 60%);
-        font: 600 15px "Manrope", sans-serif;
-        background: url(images/bg-pattern.svg) hsl(230, 100%, 99%) no-repeat;
+        font: 600 15px/1.5 "Manrope", sans-serif;
+        background: hsl(230, 100%, 99%) url(images/bg-pattern.svg) no-repeat
+          center center/ contain;
       }
-      @media (max-width: 750px) {
+      @media (min-width: 768px) {
         body {
-          height: calc(1600px - 114px);
-          font: 600 25px "Manrope", sans-serif;
-          background: url(images/bg-pattern.svg) no-repeat;
-          background-size: 343%;
+          background-position: left top;
         }
       }
+      button {
+        border: none;
+        font: inherit;
+        color: inherit;
+        background: none;
+      }
 
-      /* Utilities */
-      .center-grid {
+      /* Component styles */
+      section {
+        gap: 64px;
         display: grid;
         align-content: center;
-      }
-      .center-flex {
-        display: flex;
         justify-content: center;
-        align-items: center;
+        padding: 114px 24px 50px;
+        grid-template-rows: 290px 956px;
+        grid-template-columns: minmax(0, 540px);
       }
-      .justify-between-flex {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-      }
-      .flex-wrap {
-        flex-wrap: wrap;
-      }
-      .text-center {
+      .txt {
+        gap: 20px;
+        display: grid;
+        align-content: center;
         text-align: center;
+        background: url(images/pattern-circles.svg) no-repeat center bottom /
+          contain;
       }
-      @media (max-width: 750px) {
-        .mobile-column-direction {
-          flex-direction: column;
+      .txt h1 {
+        font-size: 2em;
+        font-weight: 800;
+        color: hsl(227, 35%, 25%);
+      }
+      @media (min-width: 768px) {
+        section {
+          gap: 54px;
+          padding-top: 67px;
+          grid-template-rows: 145px 400px;
         }
-        .mobile-text-center {
-          text-align: center;
+        .txt {
+          gap: 10px;
         }
-      }
-
-      .hide {
-        display: none;
-      }
-      .show {
-        display: block;
-      }
-      @media (max-width: 750px) {
-        .mobile-hide {
+        .txt br {
           display: none;
         }
-        .mobile-show {
-          display: block;
+      }
+
+      form {
+        height: 100%;
+        display: grid;
+        /*align-items: center;
+        align-content: center;
+        justify-content: center; */
+        background-color: #fff;
+        align-content: center;
+      }
+      form .separator {
+        width: 100%;
+        height: 1px;
+        margin: 40px 0 30px;
+        background-color: hsl(224, 65%, 95%);
+      }
+      @media (max-width: 767px) {
+        form {
+          text-align: center;
+        }
+        form .separator {
+          height: 2px;
+          margin: 76px 0 50px;
         }
       }
 
       /*
-      ** Header
+        [1] Wrapper
       */
-      header {
-        min-height: 145px;
-        margin: 67px 0 54px;
-        background: url(images/pattern-circles.svg) no-repeat center;
+      .wrapper {
+        display: grid;
       }
-      header h1 {
-        font-weight: 800;
-        font-size: 1.9em;
-        margin-bottom: 7px;
-        color: var(--primary);
-      }
-      @media (max-width: 750px) {
-        header {
-          min-height: 290px;
-          margin: 114px 0 64px;
-          background-size: contain;
-        }
-        header h1 {
-          font-size: 1.6em;
-          margin-bottom: 15px;
-        }
-        header p {
-          line-height: 1.8;
-          font-size: 26px;
-        }
-      }
-
-      /*
-      ** Card
-      */
-      .card {
-        width: 90%;
-        max-width: 655px;
-        margin: 0 auto;
-        border-radius: 20px;
-        background-color: var(--white);
-        box-shadow: 0 10px 15px 5px rgb(0 0 0 / 7%);
-      }
-      @media (min-width: 751px) {
-        .card {
-          width: 540px;
-          border-radius: 10px;
-        }
-      }
-
-      /* [1] Card Body */
-      .card-body {
-        height: 262px;
-        padding: 40px 44px;
-      }
-      .card-body > div:last-child {
-        font-size: 13px;
-        padding-left: 80px;
-      }
-      .card-body .views {
+      .views {
+        font-size: 1.1em;
         font-weight: 800;
         letter-spacing: 2px;
         text-transform: uppercase;
       }
-      .card-body .price span {
-        font-size: 40px;
+      .price {
+        gap: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .price span {
+        font-size: 3em;
         font-weight: 800;
-        margin-right: 10px;
-        color: var(--primary);
+        color: hsl(227, 35%, 25%);
       }
-      .card-body .discount {
-        width: 80px;
-        height: 20px;
-        font-size: 10px;
-        margin-left: 6px;
-        line-height: 20px;
-        border-radius: 25px;
-        color: hsl(15, 100%, 70%);
-        background-color: hsl(14, 92%, 95%);
-      }
-      @media (max-width: 750px) {
-        .card-body {
-          height: 554px;
-          padding: 67px 0;
-        }
-        .card-body > div:last-child {
-          font-size: 24px;
-          padding-left: 65px;
-        }
-        .card-body .views {
-          letter-spacing: 3px;
-        }
-        .card-body .price {
-          font-size: 27px;
-          margin-bottom: 70px;
-        }
-        .card-body .price span {
-          font-size: 63px;
-          margin-right: 20px;
-        }
-        .card-body .discount {
-          width: 81px;
-          height: 38px;
-          font-size: 20px;
-          line-height: 39px;
-          margin-left: 11px;
-        }
-      }
-
-      /* Slider component */
-      input[type="range"] {
+      .slider {
         -webkit-appearance: none;
-        width: 90%;
-        max-width: 558px;
+        -moz-appearance: none;
+        appearance: none;
+        cursor: pointer;
+        width: 85%;
         height: 16px;
-        border-radius: 10px;
+        max-width: 558px;
         margin: 80px auto;
+        border-radius: 10px;
+        background: hsl(224, 65%, 95%)
+          linear-gradient(hsl(174, 77%, 80%), hsl(174, 77%, 80%)) no-repeat left /
+          50%;
+      }
 
-        background: hsl(224, 65%, 95%);
-        background-image: linear-gradient(
-          var(--full-slider),
-          var(--full-slider)
-        );
-        background-size: 50%, 100%;
-        background-repeat: no-repeat;
-      }
-      input[type="range"]:focus {
+      /*.slider:focus {
         outline: none;
-      }
-      @media (min-width: 751px) {
-        input[type="range"] {
-          width: 100%;
-          height: 8px;
-          margin: 40px auto 55px;
+      }*/
+      @media (min-width: 768px) {
+        .slider {
           order: 3;
+          height: 8px;
+          margin: 34px auto 0;
         }
       }
 
       /* Chrome, Edge, Safari */
-      input[type="range"]::-webkit-slider-thumb {
+      .slider::-webkit-slider-thumb {
         -webkit-appearance: none;
+        appearance: none;
         cursor: grab;
         width: 80px;
         height: 80px;
         border-radius: 50%;
-        background: url(images/icon-slider.svg) var(--strong-cyan) no-repeat
+        background: url(images/icon-slider.svg) hsl(174, 86%, 45%) no-repeat
           center;
         background-size: 50%;
-        box-shadow: 0 15px 45px 10px var(--full-slider);
+        box-shadow: 0 10px 20px hsl(174deg 77% 80%);
       }
-      input[type="range"]::-webkit-slider-thumb:hover {
-        background-color: var(--full-slider);
+      .slider::-webkit-slider-thumb:active {
+        cursor: grabbing;
+      }
+      .slider::-webkit-slider-thumb:hover {
+        background-color: hsl(174, 77%, 80%);
       }
       /* Firefox */
-      input[type="range"]::-moz-range-thumb {
-        cursor: pointer;
+      .slider::-moz-range-thumb {
+        -moz-appearance: none;
+        appearance: none;
+        cursor: grab;
         width: 80px;
         height: 80px;
         border-radius: 50%;
         border: none;
-        background: url(images/icon-slider.svg) var(--strong-cyan) no-repeat
+        background: url(images/icon-slider.svg) hsl(174, 86%, 45%) no-repeat
           center;
-        box-shadow: 0 25px 50px 15px var(--full-slider);
+        box-shadow: 0 10px 20px hsl(174deg 77% 80%);
       }
-      input[type="range"]::-moz-range-thumb:hover {
-        background-color: var(--full-slider);
+      .slider::-moz-range-thumb:active {
+        cursor: grabbing;
+      }
+      .slider::-moz-range-thumb:hover {
+        background-color: hsl(174deg 77% 80%);
       }
       /* IE */
-      input[type="range"]::-ms-thumb {
-        cursor: pointer;
+      .slider::-ms-thumb {
+        appearance: none;
+        cursor: grab;
         width: 80px;
         height: 80px;
         border-radius: 50%;
         border: none;
-        background: url(images/icon-slider.svg) var(--strong-cyan) no-repeat
+        background: url(images/icon-slider.svg) hsl(174, 86%, 45%) no-repeat
           center;
-        box-shadow: 0 25px 50px 15px var(--full-slider);
+        box-shadow: 0 10px 20px hsl(174deg 77% 80%);
       }
-      input[type="range"]::-ms-thumb:hover {
-        background-color: var(--full-slider);
+      .slider::-ms-thumb:active {
+        cursor: grabbing;
       }
-      @media (min-width: 751px) {
-        input[type="range"]::-webkit-slider-thumb {
+      .slider::-ms-thumb:hover {
+        background-color: hsl(174deg 77% 80%);
+      }
+      @media (min-width: 768px) {
+        .wrapper {
+          display: flex;
+          flex-wrap: wrap;
+          align-items: center;
+          justify-content: space-around;
+        }
+        .slider::-webkit-slider-thumb {
           width: 40px;
           height: 40px;
         }
-        input[type="range"]::-moz-range-thumb {
+        .slider::-moz-range-thumb {
           width: 40px;
           height: 40px;
         }
-        input[type="range"]::-ms-thumb {
+        .slider::-ms-thumb {
           width: 40px;
           height: 40px;
         }
       }
 
-      /* Btn component */
-      .btn {
+      /*
+        [2] Billing
+      */
+
+      .billing {
+        gap: 24px;
+        display: flex;
+        margin-top: 70px;
+        align-items: center;
+        justify-self: center;
+      }
+      .billing [role="switch"] {
         width: 86px;
         height: 44px;
-        border-radius: 25px;
-        display: flex;
-        align-items: center;
         padding: 8px;
-        cursor: pointer;
-        margin: 0 25px;
+        display: grid;
+        border-radius: 25px;
+        align-items: center;
+        grid-template-columns: 28px;
         background-color: hsl(223, 50%, 87%);
       }
-      .btn.on {
-        justify-content: flex-end;
-      }
-      .btn.on,
-      .btn:hover {
-        background-color: var(--strong-cyan);
-      }
-      .btn::before {
-        content: "";
-        width: 28px;
-        height: 28px;
-        display: block;
+      .billing [role="switch"] span {
+        height: 100%;
         border-radius: 50%;
-        background-color: var(--white);
+        pointer-events: none;
+        background-color: white;
       }
-      @media (min-width: 751px) {
-        .btn {
+      .billing [role="switch"][aria-checked="true"] {
+        justify-content: end;
+      }
+      .billing p span {
+        font-weight: 800;
+        margin-left: 5px;
+        padding: 5px 10px;
+        border-radius: 15px;
+        color: hsl(15, 100%, 70%);
+        background-color: hsl(14, 92%, 95%);
+      }
+      @media (min-width: 768px) {
+        .billing {
+          gap: 12px;
+          font-size: 14px;
+          margin-top: 40px;
+        }
+        .billing [role="switch"] {
           width: 43px;
           height: 22px;
           padding: 4px;
-          margin: 0 15px;
+          grid-template-columns: 14px;
         }
-        .btn::before {
-          width: 15px;
-          height: 15px;
+        .billing .mobile {
+          display: none;
+        }
+        .billing .desktop {
+          font-size: 12px;
+        }
+      }
+      @media (max-width: 767px) {
+        .billing .desktop {
+          display: none;
+          font-size: 12px;
         }
       }
 
-      /* [2] Card Footer */
-      .card-footer {
-        height: 135px;
-        padding: 0 44px 0 47px;
+      /*
+        [3] Submit
+      */
+
+      .submit {
+        display: flex;
+        font-size: 14px;
+        align-items: center;
+        justify-content: space-around;
       }
-      .card-footer ul {
-        font-size: 12px;
-        list-style: none;
+      .submit ul {
+        gap: 15px;
+        display: grid;
+        list-style: inside url(images/icon-check.svg);
       }
-      .card-footer li:nth-child(2) {
-        margin: 21px 0;
-        margin: 10px 0;
-      }
-      .card-footer li::before {
-        content: "";
-        width: 15px;
-        height: 10px;
-        margin-right: 10px;
-        display: inline-block;
-        background: url(images/icon-check.svg) no-repeat center;
-        background-size: contain;
-      }
-      .card-footer input[type="submit"] {
-        width: 170px;
+      .submit button {
+        width: 60%;
         height: 41px;
-        border: none;
-        font: inherit;
-        border-radius: 40px;
+        font-weight: 800;
+        will-change: color;
+        border-radius: 50px;
+        transition: 0.3s color;
         color: hsl(226, 100%, 87%);
-        background-color: var(--primary);
+        background-color: hsl(227, 35%, 25%);
       }
-      .card-footer input[type="submit"]:hover {
-        cursor: pointer;
-        color: var(--white);
+      .submit button:focus-visible,
+      .submit button:hover {
+        color: #fff;
       }
-      @media (max-width: 750px) {
-        .card-footer {
-          height: 400px;
-          padding: 50px 0 64px;
+      @media (max-width: 767px) {
+        .submit {
+          gap: 66px;
+          font-size: 1.1em;
+          flex-direction: column;
+          justify-content: center;
         }
-        .card-footer ul {
-          font-size: 24px;
-        }
-        .card-footer li:nth-child(2) {
-          margin: 21px 0;
-        }
-        .card-footer li::before {
-          width: 20px;
-          height: 20px;
-          margin-right: 25px;
-        }
-        .card input[type="submit"] {
-          width: 340px;
+        .submit button {
           height: 82px;
+        }
+      }
+      @media (min-width: 768px) {
+        .submit button {
+          max-width: 170px;
         }
       }
     </style>
   </head>
-
   <body>
-    <!--
-      Header
-    -->
-    <header class="center-grid text-center">
-      <h1>Simple, traffic-based pricing</h1>
-      <p>
-        Sign-up for our 30-day trial.<br class="hide mobile-show" />
-        No credit card required.
-      </p>
-    </header>
-
-    <!--
-      Card
-    -->
-    <form class="card mobile-text-center">
-      <!-- [1] Card Body -->
-      <div class="card-body">
-        <!-- component controls -->
-        <div class="justify-between-flex flex-wrap mobile-column-direction">
-          <p class="views"><span>100K</span> Pageviews</p>
-          <input
-            type="range"
-            name="price"
-            max="4"
-            oninput="handleInputChange(event)"
-          />
-          <p class="price center-flex"><span>$16.00</span>/ month</p>
+    <main>
+      <section>
+        <div class="txt">
+          <h1>Simple, traffic-based pricing</h1>
+          <p>
+            Sign-up for our 30-day trial.<br />
+            No credit card required.
+          </p>
         </div>
 
-        <!-- discount controls -->
-        <div class="center-flex">
-          <span>Monthly Billing</span>
-          <div class="btn" onclick="discount(event)"></div>
-          <span>Yearly Billing</span>
-          <span class="discount hide mobile-show">-25%</span>
-          <span class="discount mobile-hide text-center">25% discount</span>
-        </div>
-      </div>
+        <form>
+          <div class="wrapper">
+            <p class="views"><span></span> Pageviews</p>
+            <input
+              class="slider"
+              type="range"
+              name="price"
+              aria-label="Choose your billing plan"
+            />
+            <p class="price"><span></span>/ month</p>
+          </div>
 
-      <!-- Separator -->
-      <div style="height: 1px; background-color: hsl(223, 50%, 87%)"></div>
+          <div class="billing">
+            <p>Monthly Billing</p>
+            <button
+              type="button"
+              role="switch"
+              aria-checked="false"
+              aria-label="Is yearly billing?"
+            >
+              <span aria-hidden="true"></span>
+            </button>
+            <p>
+              Yearly Billing
+              <span class="mobile">-25%</span>
+              <span class="desktop">25% discount</span>
+            </p>
+          </div>
 
-      <!-- [2] Card Footer -->
-      <div class="card-footer justify-between-flex mobile-column-direction">
-        <ul>
-          <li>Unlimited websites</li>
-          <li>100% data ownership</li>
-          <li>Email reports</li>
-        </ul>
+          <div class="separator"></div>
 
-        <input type="submit" value="Start my trial" />
-      </div>
-    </form>
+          <div class="submit">
+            <ul>
+              <li>Unlimited websites</li>
+              <li>100% data ownership</li>
+              <li>Email reports</li>
+            </ul>
 
-    <!--
-      Component Logic
-    -->
+            <button type="submit">Start my trial</button>
+          </div>
+        </form>
+      </section>
+    </main>
+
     <script>
-      /* Helper Functions */
-      function discount(e) {
-        const target = e.target;
-        const price = document.querySelector(".price span");
-        let val = (parseInt(price.innerHTML.substr(1)) / 4) * 3;
+      const $ = document.querySelector.bind(document);
 
-        target.classList.toggle("on");
-        target.classList.contains("on")
-          ? (price.innerHTML = "$" + val + ".00")
-          : updateUI(document.querySelector("input[type=range]").value);
-      }
-      function handleInputChange(e) {
-        const target = e.target;
+      (function () {
+        const Modal = {
+          billing: "monthly",
+          pageViews: ["10K", "50K", "100K", "500k", "1M"],
+          cost: [8, 12, 16, 24, 36],
+        };
 
-        const min = target.min;
-        const max = target.max;
-        const val = target.value;
+        const Controller = {
+          getPageViews: () => Modal.pageViews,
+          getCost: () => Modal.cost,
 
-        updateUI(val);
-        target.style.backgroundSize =
-          ((val - min) * 100) / (max - min) + "% 100%";
-      }
-      function updateUI(targetVal) {
-        const views = ["10k", "50K", "100K", "500K", "1M"];
-        const prices = ["$8.00", "$12.00", "$16.00", "$24.00", "$36.00"];
+          getBilling: () => Modal.billing,
+          toggleBilling: function () {
+            Modal.billing =
+              this.getBilling() === "monthly" ? "yearly" : "monthly";
+          },
 
-        prices.forEach((price, i) => {
-          if (parseInt(targetVal) === i) {
-            document.querySelector(".price span").innerHTML = price;
-            document.querySelector(".views span").innerHTML = views[i];
-          }
-        });
-      }
+          init: function () {
+            Views.init();
+          },
+        };
+
+        const Views = {
+          init: function () {
+            const slider = $(".slider");
+            const dataLength = Controller.getPageViews().length;
+
+            slider.max = dataLength - 1;
+            slider.value = Math.floor(dataLength / 2);
+            this.render();
+
+            slider.oninput = (e) => {
+              e.target.style.backgroundSize =
+                (slider.value * 100) / (dataLength - 1) + "%";
+
+              this.render();
+            };
+
+            $("form [role=switch]").onclick = (e) => {
+              e.target.ariaChecked =
+                e.target.ariaChecked === "false" ? "true" : "false";
+
+              Controller.toggleBilling();
+              this.render();
+            };
+          },
+
+          render: function () {
+            let currentIndex = $(".slider").value;
+            const billing = Controller.getBilling();
+            const pageViews = Controller.getPageViews()[currentIndex];
+            const cost = Controller.getCost()[currentIndex];
+            const totalCost = billing === "monthly" ? cost : (cost / 4) * 3;
+
+            $(".views span").innerHTML = pageViews;
+            $(".price span").innerHTML = "$" + totalCost + ".00";
+          },
+        };
+
+        Controller.init();
+      })();
     </script>
   </body>
 </html>
