@@ -4,8 +4,8 @@ This is a solution to the [Interactive pricing component challenge on Frontend M
 
 ## Links
 
-- Live Site [URL](https://mhmd-tarek-mhmd.github.io/interactive-pricing-component)
-- Solution [URL](https://www.frontendmentor.io/solutions/interactive-pricing-component-)
+- Live Site [URL](https://mhmd-tarek-mhmd.github.io/Interactive-pricing-component)
+- Solution [URL](https://www.frontendmentor.io/solutions/interactive-pricing-component-ZKAgqPTrhD)
 
 ## Screenshots
 
